@@ -4,7 +4,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-
 //screens
 import Acount from './src/screens/acount';
 import Loan from './src/screens/loan';
@@ -30,6 +29,11 @@ export function LoginStackScreen() {
         component={Register}
         options={{ headerStyle: styles.header, headerTitleStyle: styles.headerTitle, headerTintColor: 'blue' }}
       />
+      <LoginStack.Screen
+        name='RoutingTabs'
+        component={RoutingTabs}
+        options={{ headerShown: false, headerBackTitleVisible: false }}
+      />
     </LoginStack.Navigator>
   );
 }
@@ -40,7 +44,7 @@ export function AcountStackScreen() {
       <AcountStack.Screen
         name='Cuenta'
         component={Acount}
-        options={{ headerStyle: styles.header, headerTitleStyle: styles.headerTitle }}
+        options={{ headerStyle: styles.header, headerTitleStyle: styles.headerTitle, headerBackTitleVisible: false }}
       />
       <AcountStack.Screen
         name='Perfil'
@@ -59,20 +63,13 @@ export function AcountStackScreen() {
 function RoutingTabs() {
   return (
     <TabNav.Navigator
-      initialRouteName='Ingreso'
+      initialRouteName='Cuenta'
       screenOptions={{
         tabBarActiveTintColor: 'blue',
         tabBarInactiveTintColor: 'black',
         tabBarStyle: styles.tabBar,
       }}
     >
-      <TabNav.Screen
-        name='Ingreso'
-        component={LoginStackScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
       <TabNav.Screen
         name='Cuenta'
         component={AcountStackScreen}
@@ -95,7 +92,7 @@ function RoutingTabs() {
 export default function Navigation() {
   return (
     <NavigationContainer>
-      <RoutingTabs />
+      <LoginStackScreen />
     </NavigationContainer>
   );
 }

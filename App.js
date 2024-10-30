@@ -1,5 +1,10 @@
 import Navigation from './Navigation';
+import { UserProvider } from './UserContext';
 
 export default function App() {
-  return <Navigation />;
+  return (
+    <UserProvider>
+      <Navigation />
+    </UserProvider>
+  );
 }

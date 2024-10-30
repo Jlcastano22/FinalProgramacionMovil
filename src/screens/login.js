@@ -1,14 +1,46 @@
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { Button, Text, TextInput, View } from 'react-native-web';
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { UserContext } from '../../UserContext';
+
 export default function Login() {
   const navigation = useNavigation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [usuario, setUsuario] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+  const { setUserId } = useContext(UserContext);
+  const urlBase = 'http://localhost:3000/Usuario';
+
+  useEffect(() => {
+    getApi();
+  }, []);
+
+  const getApi = async () => {
+    try {
+      const response = await fetch(urlBase);
+      const dataApi = await response.json();
+      setUsuario(dataApi);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLogin = () => {
+    const usuarioValido = usuario.find((user) => user.email === username && user.contraseña === password);
+    if (usuarioValido) {
+      console.log(usuarioValido.id);
+      setUserId(usuarioValido.id);
+      navigation.replace('RoutingTabs');
+    } else {
+      setErrorMessage('Usuario o contraseña incorrectos');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Estebanquito</Text>
+      <Text>{errorMessage}</Text>
       <TextInput style={styles.input} placeholder='Usuario' value={username} onChangeText={setUsername} />
       <TextInput
         style={styles.input}
@@ -17,7 +49,7 @@ export default function Login() {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button style={styles.button} title='Ingresar' />
+      <Button style={styles.button} title='Ingresar' onPress={handleLogin} />
       <Text style={styles.footerText}>¿No tienes una cuenta?</Text>
       <Button style={styles.button} title='Registrarse' onPress={() => navigation.navigate('Registrarse')} />
     </View>
@@ -29,28 +61,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#f4f6f9', // Fondo blanco grisáceo
+    backgroundColor: '#f4f6f9',
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 40,
-    color: '#004b8d', // Azul oscuro
+    color: '#004b8d',
   },
   input: {
     height: 50,
-    borderColor: '#004b8d', // Azul oscuro
+    borderColor: '#004b8d',
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 15,
     marginBottom: 20,
-    backgroundColor: '#ffffff', // Fondo blanco
+    backgroundColor: '#ffffff',
   },
   button: {
-    backgroundColor: '#0078d4', // Azul vibrante para el botón
-    color: '#ffffff',
-    borderRadius: 10,
+    backgroundColor: '#f4f6f9',
+    color: '#fff',
+    borderRadius: 4,
     marginBottom: 20,
   },
   footer: {
@@ -61,6 +93,6 @@ const styles = StyleSheet.create({
   },
   footerText: {
     marginRight: 10,
-    color: '#666666', // Texto más suave para el mensaje
+    color: '#666666',
   },
 });

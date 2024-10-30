@@ -1,9 +1,31 @@
-import { useNavigation } from '@react-navigation/native';
-import { StyleSheet } from 'react-native';
-import { Button, FlatList, Text, View } from 'react-native-web';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useContext, useEffect, useState } from 'react'; // Importar useEffect
+import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
+import { UserContext } from '../../UserContext';
 
 export default function Acount() {
+  const { userId } = useContext(UserContext);
+  const [usuario, setUsuario] = useState({});
   const navigation = useNavigation();
+  const route = useRoute();
+  const urlBase = `http://localhost:3000/Usuario/${userId}`;
+
+  useEffect(() => {
+    if (userId) {
+      getApi();
+    }
+  }, [userId]);
+
+  const getApi = async () => {
+    try {
+      const response = await fetch(urlBase);
+      const dataApi = await response.json();
+      setUsuario(dataApi);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.section}>
@@ -11,7 +33,7 @@ export default function Acount() {
       </View>
       <View style={styles.balanceSection}>
         <Text style={styles.balanceLabel}>Tu saldo</Text>
-        <Text style={styles.balance}>5645.00</Text>
+        <Text style={styles.balance}>{usuario.saldo}</Text>
       </View>
       <View style={styles.section}>
         <Text style={styles.header}>Transacciones</Text>

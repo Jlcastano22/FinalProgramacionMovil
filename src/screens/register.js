@@ -1,16 +1,51 @@
+import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, Text, TextInput, View } from 'react-native-web';
 
 export default function Register() {
+  const [nombre, setNombre] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [Contrasena, setContrasena] = useState('');
+  const [cuenta, setCuenta] = useState('');
+  const [creacion, setCreacion] = useState('');
+
+  const postUsuario = () => {
+    fetch('http://localhost:3000/postUsuario', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        nombre: nombre,
+        email: correo,
+        contraseña: Contrasena,
+        numero_cuenta: telefono,
+        tipo: cuenta,
+        saldo: 0,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.log(error));
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Registrate</Text>
-      <TextInput style={styles.input} placeholder='Nombre' />
-      <TextInput style={styles.input} placeholder='Telefono' />
-      <TextInput style={styles.input} placeholder='Correo' />
-      <TextInput style={styles.input} placeholder='Contraseña' secureTextEntry />
-      <TextInput style={styles.input} placeholder='Tipo de cuenta' />
-      <Button style={styles.button} title='Registrarse' />
+      <Text>{creacion}</Text>
+      <TextInput style={styles.input} placeholder='Nombre' value={nombre} onChangeText={setNombre} />
+      <TextInput style={styles.input} placeholder='Telefono' value={telefono} onChangeText={setTelefono} />
+      <TextInput style={styles.input} placeholder='Correo' value={correo} onChangeText={setCorreo} />
+      <TextInput
+        style={styles.input}
+        placeholder='Contraseña'
+        secureTextEntry
+        value={Contrasena}
+        onChangeText={setContrasena}
+      />
+      <TextInput style={styles.input} placeholder='Tipo de cuenta' value={cuenta} onChangeText={setCuenta} />
+      <Button style={styles.button} title='Registrarse' onPress={postUsuario} />
     </View>
   );
 }
@@ -20,26 +55,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#f4f6f9', // Fondo claro y limpio
+    backgroundColor: '#f4f6f9',
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 40,
-    color: '#004b8d', // Azul oscuro
+    color: '#004b8d',
   },
   input: {
     height: 50,
-    borderColor: '#004b8d', // Azul oscuro
+    borderColor: '#004b8d',
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 15,
     marginBottom: 20,
-    backgroundColor: '#ffffff', // Fondo blanco para inputs
+    backgroundColor: '#ffffff',
   },
   button: {
-    backgroundColor: '#0078d4', // Azul vibrante para el botón
+    backgroundColor: '#0078d4',
     color: '#ffffff',
     borderRadius: 10,
     paddingVertical: 10,
