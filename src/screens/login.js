@@ -17,19 +17,15 @@ export default function Login() {
   }, []);
 
   const getApi = async () => {
-    try {
-      const response = await fetch(urlBase);
-      const dataApi = await response.json();
-      setUsuario(dataApi);
-    } catch (error) {
-      console.log(error);
-    }
+    fetch(urlBase)
+      .then((response) => response.json())
+      .then((dataApi) => setUsuario(dataApi))
+      .catch((error) => console.log(error));
   };
 
   const handleLogin = () => {
     const usuarioValido = usuario.find((user) => user.email === username && user.contraseña === password);
     if (usuarioValido) {
-      console.log(usuarioValido.id);
       setUserId(usuarioValido.id);
       navigation.replace('RoutingTabs');
     } else {
