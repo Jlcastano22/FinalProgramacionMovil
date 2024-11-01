@@ -30,14 +30,18 @@ export default function Transactions() {
         setCreacion('Transacción registrada exitosamente');
         if (tipo === 'Deposito') {
           actualizarSaldo(monto);
+          actualizarIngreso(monto);
         }
         if (tipo === 'Retiro') {
           actualizarSaldo(-monto);
+          actualizarEgreso(monto);
         }
         if (tipo.includes('Envio a')) {
           actualizarSaldo(-monto);
           actualizarSaldoTransferencia(monto);
           postTransaccionTransferencia(`Recibe de ${userId}`, monto);
+          actualizarIngresoTransferencia(monto);
+          actualizarEgreso(monto);
         }
       })
       .catch((error) => {
@@ -65,6 +69,65 @@ export default function Transactions() {
       });
   };
 
+  const actualizarIngreso = (nuevoIngreso) => {
+    fetch(`http://localhost:3000/putReporte/${userId}/ingreso`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ nuevoIngreso }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCreacion('Ingreso actualizado exitosamente');
+      })
+      .catch((error) => {
+        console.log(error);
+        setCreacion('Error al actualizar ingreso');
+      });
+  };
+
+  const actualizarIngresoTransferencia = (nuevoIngreso) => {
+    console.log(nuevoIngreso);
+    console.log(cuenta);
+    fetch(`http://localhost:3000/putReporte/${cuenta}/ingresobycuenta`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ nuevoIngreso }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCreacion('Ingreso transferencia actualizado exitosamente');
+      })
+      .catch((error) => {
+        console.log(error);
+        setCreacion('Error al actualizar ingreso  transferencia');
+      });
+  };
+
+  const actualizarEgreso = (nuevoEgreso) => {
+    fetch(`http://localhost:3000/putReporte/${userId}/egreso`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ nuevoEgreso }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCreacion('Egreso actualizado exitosamente');
+      })
+      .catch((error) => {
+        console.log(error);
+        setCreacion('Error al actualizar egreso');
+      });
+  };
+
   const postTransaccionTransferencia = (tipo, monto) => {
     const fecha = new Date().toISOString().split('T')[0];
     fetch('http://localhost:3000/postTransaccionTransferencia', {
@@ -82,11 +145,11 @@ export default function Transactions() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setCreacion('Transacción registrada exitosamente');
+        setCreacion('Transacción transferencia registrada exitosamente');
       })
       .catch((error) => {
         console.log(error);
-        setCreacion('Error al registrar la transacción');
+        setCreacion('Error al registrar la transacción transferencia');
       });
   };
 
@@ -101,11 +164,11 @@ export default function Transactions() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setCreacion('Saldo actualizado exitosamente');
+        setCreacion('Reporte actualizado exitosamente');
       })
       .catch((error) => {
         console.log(error);
-        setCreacion('Error al actualizar saldo');
+        setCreacion('Error al actualizar reporte');
       });
   };
 

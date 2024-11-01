@@ -49,6 +49,50 @@ export default function Loan() {
       });
   };
 
+  const actualizarSaldo = (nuevoSaldo) => {
+    fetch(`http://localhost:3000/putUsuario/${userId}/saldo`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ nuevoSaldo }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCreacion('Saldo actualizado exitosamente');
+      })
+      .catch((error) => {
+        console.log(error);
+        setCreacion('Error al actualizar saldo');
+      });
+  };
+
+  const actualizarIngreso = (nuevoIngreso) => {
+    fetch(`http://localhost:3000/putReporte/${userId}/ingreso`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ nuevoIngreso }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCreacion('Ingreso actualizado exitosamente');
+      })
+      .catch((error) => {
+        console.log(error);
+        setCreacion('Error al actualizar ingreso');
+      });
+  };
+
+  const handleLoan = () => {
+    registrarPrestamo();
+    actualizarSaldo(monto);
+    actualizarIngreso(monto);
+  };
+
   const handleChangeMonto = (text) => {
     const numericText = text.replace(/[^0-9]/g, '');
     setMonto(text);
@@ -93,7 +137,7 @@ export default function Loan() {
           keyboardType='numeric'
           onChangeText={handleChangePlazo}
         />
-        <Button title='Confirmar' style={styles.button} onPress={() => registrarPrestamo()} />
+        <Button title='Confirmar' style={styles.button} onPress={handleLoan} />
         <Text>{creacion}</Text>
       </View>
     </View>

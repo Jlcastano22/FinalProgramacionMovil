@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { UserContext } from '../../UserContext';
 
 export default function Login() {
@@ -35,7 +35,7 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Estebanquito</Text>
+      <Image source={'/src/Images/Logo.png'} style={styles.image} />
       <Text>{errorMessage}</Text>
       <TextInput style={styles.input} placeholder='Usuario' value={username} onChangeText={setUsername} />
       <TextInput
@@ -47,7 +47,7 @@ export default function Login() {
       />
       <Button style={styles.button} title='Ingresar' onPress={handleLogin} />
       <Text style={styles.footerText}>¿No tienes una cuenta?</Text>
-      <Button style={styles.button} title='Registrarse' onPress={() => navigation.replace('Registrarse')} />
+      <Button style={styles.button} title='Registrarse' onPress={() => navigation.navigate('Registrarse')} />
     </View>
   );
 }
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
     backgroundColor: '#f4f6f9',
+    alignItems: 'stretch',
   },
   header: {
     fontSize: 24,
@@ -90,5 +91,10 @@ const styles = StyleSheet.create({
   footerText: {
     marginRight: 10,
     color: '#666666',
+  },
+  image: {
+    width: '100%',
+    height: '35%',
+    marginBottom: 50,
   },
 });

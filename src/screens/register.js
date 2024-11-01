@@ -35,6 +35,26 @@ export default function Register() {
       });
   };
 
+  const postReporte = () => {
+    fetch('http://localhost:3000/postReporte', {
+      method: 'POST',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCreacion('Usuario registrado exitosamente');
+      })
+      .catch((error) => {
+        console.log(error);
+        setCreacion('Error al registrar usuario');
+      });
+  };
+
+  const handleRegister = () => {
+    postUsuario();
+    postReporte();
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Registrate</Text>
@@ -59,7 +79,7 @@ export default function Register() {
         <Picker.Item label='Corriente' value='corriente' />
       </Picker>
 
-      <Button style={styles.button} title='Registrarse' onPress={postUsuario} />
+      <Button style={styles.button} title='Registrarse' onPress={handleRegister} />
     </View>
   );
 }

@@ -32,8 +32,6 @@ export default function Acount() {
       .catch((error) => console.log(error));
   };
 
-  const transaccionesRelevantes = transaccion.filter((item) => item.id);
-  
   return (
     <View style={styles.container}>
       <View style={styles.section}>
@@ -45,7 +43,7 @@ export default function Acount() {
       </View>
       <View style={styles.sectionTransaccion}>
         <Text style={styles.header}>Transacciones</Text>
-        {transaccionesRelevantes.length > 0 ? (
+        {transaccion.length > 0 ? (
           <FlatList
             style={{ flex: 1 }}
             data={transaccion}
@@ -60,7 +58,7 @@ export default function Acount() {
             )}
           />
         ) : (
-          <Text>No hay transacciones disponibles</Text>
+          <Text>No hay transacciones registradas</Text>
         )}
       </View>
       <View style={styles.section}>

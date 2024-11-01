@@ -10,6 +10,7 @@ import Loan from './src/screens/loan';
 import Login from './src/screens/login';
 import Profile from './src/screens/profile';
 import Register from './src/screens/register';
+import Report from './src/screens/report';
 import Transactions from './src/screens/transactions';
 
 const TabNav = createBottomTabNavigator();
@@ -81,6 +82,13 @@ function RoutingTabs() {
       <TabNav.Screen
         name='Prestamo'
         component={Loan}
+        options={{
+          tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name='face-man' size={24} color='gray' />,
+        }}
+      />
+      <TabNav.Screen
+        name='Reporte'
+        component={Report}
         options={{
           tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name='face-man' size={24} color='gray' />,
         }}
