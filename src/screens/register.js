@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { Button, Text, TextInput, View } from 'react-native-web';
+import { Button, Picker, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function Register() {
   const [nombre, setNombre] = useState('');
@@ -11,7 +10,7 @@ export default function Register() {
   const [creacion, setCreacion] = useState('');
 
   const postUsuario = () => {
-    fetch('http://localhost:3000/postUsuario', {
+    fetch('http://localhost:3000/Usuario', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,8 +25,14 @@ export default function Register() {
       }),
     })
       .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.log(error));
+      .then((data) => {
+        console.log(data);
+        setCreacion('Usuario registrado exitosamente');
+      })
+      .catch((error) => {
+        console.log(error);
+        setCreacion('Error al registrar usuario');
+      });
   };
 
   return (
@@ -44,7 +49,16 @@ export default function Register() {
         value={Contrasena}
         onChangeText={setContrasena}
       />
-      <TextInput style={styles.input} placeholder='Tipo de cuenta' value={cuenta} onChangeText={setCuenta} />
+      <Picker
+        selectedValue={cuenta}
+        style={styles.input}
+        onValueChange={(itemValue, itemIndex) => setCuenta(itemValue)}
+      >
+        <Picker.Item label='Selecciona el tipo de cuenta' value='' />
+        <Picker.Item label='Ahorro' value='ahorro' />
+        <Picker.Item label='Corriente' value='corriente' />
+      </Picker>
+
       <Button style={styles.button} title='Registrarse' onPress={postUsuario} />
     </View>
   );

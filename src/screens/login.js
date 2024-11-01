@@ -47,7 +47,7 @@ export default function Login() {
       />
       <Button style={styles.button} title='Ingresar' onPress={handleLogin} />
       <Text style={styles.footerText}>¿No tienes una cuenta?</Text>
-      <Button style={styles.button} title='Registrarse' onPress={() => navigation.navigate('Registrarse')} />
+      <Button style={styles.button} title='Registrarse' onPress={() => navigation.replace('Registrarse')} />
     </View>
   );
 }

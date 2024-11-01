@@ -6,7 +6,7 @@ import { UserContext } from '../../UserContext';
 export default function Acount() {
   const { userId } = useContext(UserContext);
   const [usuario, setUsuario] = useState({});
-  const [transaccion, setTransaccion] = useState({});
+  const [transaccion, setTransaccion] = useState([]);
   const navigation = useNavigation();
   const urlBase = `http://localhost:3000/Usuario/${userId}`;
   const urlTransaccion = `http://localhost:3000/Transaccion/${userId}`;
@@ -28,10 +28,12 @@ export default function Acount() {
   const getApiTransaccion = async () => {
     fetch(urlTransaccion)
       .then((response) => response.json())
-      .then((dataApi) => setTransaccion([dataApi]))
+      .then((dataApi) => setTransaccion(dataApi))
       .catch((error) => console.log(error));
   };
 
+  const transaccionesRelevantes = transaccion.filter((item) => item.id);
+  
   return (
     <View style={styles.container}>
       <View style={styles.section}>
@@ -41,14 +43,14 @@ export default function Acount() {
         <Text style={styles.balanceLabel}>Tu saldo</Text>
         <Text style={styles.balance}>{usuario.saldo}</Text>
       </View>
-      <View style={styles.section}>
+      <View style={styles.sectionTransaccion}>
         <Text style={styles.header}>Transacciones</Text>
-        {transaccion.length > 0 ? (
+        {transaccionesRelevantes.length > 0 ? (
           <FlatList
             style={{ flex: 1 }}
             data={transaccion}
             extraData={transaccion}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={styles.transactionItem}>
                 <Text style={styles.transactionDescription}>{item.tipo}</Text>
@@ -74,8 +76,14 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#f4f6f9',
   },
+
   section: {
     marginBottom: 30,
+  },
+  sectionTransaccion: {
+    marginBottom: 30,
+    height: '50%',
+    width: '100%',
   },
   balanceSection: {
     alignItems: 'center',
